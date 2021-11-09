@@ -16,6 +16,31 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 2
     },
+    phoneNumber: { 
+        type: String, 
+        required: true, 
+        minlength: 10
+    },
+    streetAddress1: { 
+        type: String, 
+        required: true
+    },
+    streetAddress2: { 
+        type: String
+    },
+    city: { 
+        type: String, 
+        required: true
+    },
+    state: { 
+        type: String, 
+        required: true,
+        minlength: 2
+    },
+    zip: { 
+        type: String, 
+        required: true
+    },
     email: { 
         type: String, 
         required: true, 
@@ -27,6 +52,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String, 
         required: true,
+        minlength: 8,
         select: false
     }
 })
