@@ -16,7 +16,7 @@ const clinicSchema = new mongoose.Schema({
   phoneNumber: {
     type: String, 
     required: true,
-    minlength: 10
+    match: [/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g, "Invalid Phone Number"]
   },
   faxNumber: String,
   website: String,
@@ -30,6 +30,6 @@ const clinicSchema = new mongoose.Schema({
   alternatePhoneNumbers: String
 })
 
-const clinic = new mongoose.model('Clinic', clinicSchema);
+const Clinic = new mongoose.model('Clinic', clinicSchema);
 
-module.exports = clinic;
+module.exports = Clinic;
