@@ -27,7 +27,10 @@ const clinicSchema = new mongoose.Schema({
     match: [/.+\@.+\..+/, "Invalid E-mail Address"],
   },
   caseCoordinator: String,
-  alternatePhoneNumbers: String
+  alternatePhoneNumbers: String,
+
+  latitude: Number,
+  longitude: Number
 })
 
 const Clinic = new mongoose.model('Clinic', clinicSchema);
