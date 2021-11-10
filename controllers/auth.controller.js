@@ -30,8 +30,8 @@ const authController = {
                   statusCode: res.statusCode
                 });
               } else {
-                res.json({
-                  statusCode: 400,
+                res.status(400).json({
+                  statusCode: res.statusCode,
                   message: "Invalid username or password"
                 });
               }
