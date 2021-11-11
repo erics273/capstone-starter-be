@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+//middleware used to require authentication
+const { validateJwtMiddleware } = require("../auth");
+
 //import the clinics controller to handle our clinic routes
 const clinicsController = require("../controllers/clinics.controller")
 
@@ -11,10 +14,12 @@ router.post("/", clinicsController.createClinic)
 router.get("/", clinicsController.getClinics)
 
 //put route to update a clinic **no validator yet, not sure if needed 
+//Got auth working, but turning off for now
+// router.put("/:id", validateJwtMiddleware, clinicsController.updateClinic)
 router.put("/:id", clinicsController.updateClinic)
 
 //delete route to delete a clinic **no validator yet, not sure if needed 
-router.delete("/:id", clinicsController.deleteClinic)
+router.delete("/:id", validateJwtMiddleware, clinicsController.deleteClinic)
 
 
 module.exports = router;
