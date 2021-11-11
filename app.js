@@ -21,6 +21,9 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/user.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
+//adding route for clinic
+const clinicsRouter=require("./routes/clinics.routes");
+const hubsRouter=require("./routes/hubs.routes");
 
 const app = express();
 
@@ -33,7 +36,10 @@ app.use(swaggerDocsRouter);
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
-
+//tell our app to use our clinics route 
+app.use('/api/clinics', clinicsRouter);
+//tell our app to use our hubs route 
+app.use('/api/hubs', hubsRouter);
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
 
