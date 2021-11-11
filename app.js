@@ -20,6 +20,7 @@ mongoose.connect(process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/myApplic
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/user.routes');
+const petsRouter = require('./routes/pet.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
 //adding route for clinic
 const clinicsRouter=require("./routes/clinics.routes");
@@ -42,6 +43,8 @@ app.use('/api/clinics', clinicsRouter);
 app.use('/api/hubs', hubsRouter);
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
+app.use('/api/pets', petsRouter);
+
 
 //custom error hadndling
 app.use((err, req, res, next) => {

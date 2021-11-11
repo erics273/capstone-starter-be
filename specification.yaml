@@ -21,11 +21,97 @@ components:
           type: string
         password:
           type: string
+          minLength: 8
+        phoneNumber:
+          type: string
+          minLength: 10
+        streetAddress1:
+          type: string
+        streetAddress2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+          minLength: 2
+        zip:
+          type: string
       required:
         - firstName
         - lastName
+        - phoneNumber
+        - streetAddress1
+        - city
+        - state
+        - zip
         - email
         - password
+    Pet:
+      additionalProperties: false
+      type: object
+      properties:
+        userEmail:
+          type: string
+        petName:
+          type: string
+        petGender:
+          type: string
+        petSpecies:
+          type: string
+        petBirthday:
+          type: date
+        petSize:
+          type: string
+        petHairType:
+          type: string
+        petLegs:
+          type: string
+        petAllergies:
+          type: boolean
+        petAllergiesDetails:
+          type: string 
+        petTemperament:
+          type: string
+      required:
+        - userEmail
+        - petName
+        - petGender
+        - petSpecies
+        - petBirthday
+        - petSize
+        - petHairType
+        - petLegs
+        - petAllergies
+        - petTemperament        
+    PetResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        _id:
+          type: string
+        userEmail:
+          type: string
+        petName:
+          type: string
+        petGender:
+          type: string
+        petSpecies:
+          type: string
+        petBirthday:
+          type: date
+        petSize:
+          type: string
+        petHairType:
+          type: string
+        petLegs:
+          type: string
+        petAllergies:
+          type: boolean
+        petAllergiesDetails:
+          type: string 
+        petTemperament:
+          type: string
+
     UserResponse:
       additionalProperties: false
       type: object
@@ -37,6 +123,18 @@ components:
         lastName:
           type: string
         email:
+          type: string
+        phoneNumber:
+          type: string
+        streetAddress1:
+          type: string
+        streetAddress2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
           type: string
     Login:
       additionalProperties: false
@@ -217,6 +315,53 @@ paths:
                         $ref: '#/components/schemas/UserResponse'
         '400':
           $ref: '#/components/responses/400'
+  /api/pets:
+    get:
+      summary: Get a list of users
+      tags:
+        - Pets
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PetResponse'
+        '400':
+          $ref: '#/components/responses/400'
+    post:
+      summary: Create a new pet
+      operationId: createPet
+      x-controller: pets
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/PetResponse'
+        '400':
+          $ref: '#/components/responses/400'        
   /api/users/{email}:
     put:
       summary: Update user
