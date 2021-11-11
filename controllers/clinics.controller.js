@@ -8,13 +8,44 @@ const clinicsController = {
     //method to get all users using async/await syntax
     getClinics: async function (req, res) {
 
+        let query = {}
+        if(req.query.clinic){
+          const regex = new RegExp(`.*${req.query.clinic}.*$`, "i")
+          query.clinic = {'$regex':regex}
+        }
+        if(req.query.address){
+            const regex = new RegExp(`.*${req.query.address}.*$`, "i")
+            query.address = {'$regex':regex}
+          }
+          
+          if(req.query.area){
+            const regex = new RegExp(`.*${req.query.area}.*$`, "i")
+            query.area = {'$regex':regex}
+          }
+
+          if(req.query.doctor){
+            const regex = new RegExp(`.*${req.query.doctor}.*$`, "i")
+            query.doctor = {'$regex':regex}
+          }
+          
+          if(req.query.notes){
+            const regex = new RegExp(`.*${req.query.notes}.*$`, "i")
+            query.notes = {'$regex':regex}
+          }
+
+          if(req.query.specialty){
+            const regex = new RegExp(`.*${req.query.specialty}.*$`, "i")
+            query.specialty = {'$regex':regex}
+          }
+
+
         //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
         try {
 
             //use our model to find users that match a query.
             //{} is the current query which really mean find all the clinics
             //we use await here since this is an async process and we want the code to wait for this to finish before moving on to the next line of code
-            let allClinics = await Clinic.find({})
+            let allClinics = await Clinic.find(query)
 
             //return all the clinics that we found in JSON format
             res.json(allClinics)
