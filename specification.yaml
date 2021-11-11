@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Capstone BE Starter
+  title: California Hub/Client Application
   version: 1.0.0
 servers:
   - url: http://localhost:5000
@@ -77,6 +77,109 @@ components:
           maximum: 599
       required:
         - statusCode
+    Hub:
+      additionalProperties: false
+      type: object
+      properties:
+        upsRiskManager:
+          type: string
+        upsHubName:
+          type: string
+        address:
+          type: string
+          minLength: 4
+        latitude:
+          type: number
+        longitude:
+          type: number
+        required:
+        - address
+    HubResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        _id:
+          type: string
+        upsRiskManager:
+          type: string
+        upsHubName:
+          type: string
+        address:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+    Clinic:
+      additionalProperties: false
+      type: object
+      properties:
+        area:
+          type: string 
+        clinic:
+          type: string
+          minLength: 3
+        doctor:
+          type: string
+          minLength: 4
+        address:
+          type: string
+        phoneNumber:
+          type: string
+        faxNumber:
+          type: string
+        website:
+          type: string
+        specialty:
+          type: string
+        notes:
+          type: string
+        email:
+          type: string
+        caseCoordinator:
+          type: string
+        alternatePhoneNumbers:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+      required:
+        - clinic
+        - doctor
+        - phoneNumber
+    ClinicResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        _id:
+          type: string
+        clinic:
+          type: string
+        doctor:
+          type: string
+        address:
+          type: string
+        phoneNumber:
+          type: string
+        faxNumber:
+          type: string
+        website:
+          type: string
+        specialty:
+          type: string
+        notes:
+          type: string
+        email:
+          type: string
+        caseCoordinator:
+          type: string
+        alternatePhoneNumbers:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
   securitySchemes:
     bearerAuth:
       type: http
@@ -245,6 +348,234 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+  /api/hubs:
+    get:
+      summary: Get a list of CA hubs
+      tags:
+        - Hubs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/HubResponse'
+        '400':
+          $ref: '#/components/responses/400'
+    post:
+      summary: Create a new CA hub
+      operationId: createHub
+      x-controller: hubs
+      tags:
+        - Hubs
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Hub'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/HubResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/hubs/{id}:
+    put:
+      summary: Update a CA hub
+      tags:
+        - Hubs
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: The id number of the hub
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The user updates
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Hub'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+    delete:
+      summary: Delete a CA hub
+      tags:
+        - Hubs
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: The id number of the hub
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The user updates
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Hub'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+  /api/clinics:
+    get:
+      summary: Get a list of CA clinics
+      tags:
+        - Clinics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ClinicResponse'
+        '400':
+          $ref: '#/components/responses/400'
+    post:
+      summary: Create a new CA clinic
+      operationId: createClinic
+      x-controller: clinics
+      tags:
+        - Clinics
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/ClinicResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/clinics/{id}:
+    put:
+      summary: Update a CA clinic
+      tags:
+        - Clinics
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: The id number of the clinic
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The user updates
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+    delete:
+      summary: Delete a CA clinic
+      tags:
+        - Clinics
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: The id number of the clinic
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The user updates
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clinic'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClinicResponse'
         '400':
           $ref: '#/components/responses/400'
         '401':
