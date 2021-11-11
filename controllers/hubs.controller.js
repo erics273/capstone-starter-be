@@ -4,9 +4,26 @@ const Hub = require("../models/hubs.model")
 //build our controller that will have our CRUD and other methods for our hub
 const hubsController = {
     getHubs: async function (req, res) {
+//create query to find hubs
+        let query = {}
+        if(req.query.upsHubName){
+          const regex = new RegExp(`.*${req.query.upsHubName}.*$`, "i")
+          query.upsHubName = {'$regex':regex}
+        }
+
+        if(req.query.upsRiskManager){
+            const regex = new RegExp(`.*${req.query.upsRiskManager}.*$`, "i")
+            query.upsRiskManager = {'$regex':regex}
+          }
+
+          if(req.query.address){
+            const regex = new RegExp(`.*${req.query.address}.*$`, "i")
+            query.address = {'$regex':regex}
+          }
 
         try {
-            let allHubs = await Hub.find({})
+            //use our model to find hubs that match query
+            let allHubs = await Hub.find(query)
             res.json(allHubs)
 
         } catch (error) {
