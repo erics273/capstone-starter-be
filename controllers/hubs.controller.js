@@ -6,6 +6,21 @@ const hubsController = {
     getHubs: async function (req, res) {
 //create query to find hubs
         let query = {}
+
+        if (req.query.searchTerm){
+            const regex = new RegExp(`.*${req.query.searchTerm}.*$`, "i")
+                query = {
+                    $or:[
+                        {upsHubName: {'$regex':regex}},
+                        {upsRiskManager: {'$regex':regex}},
+                        {address: {'$regex':regex}}
+                  
+                    ]
+            
+                }
+        }
+
+        //Delete?
         if(req.query.upsHubName){
           const regex = new RegExp(`.*${req.query.upsHubName}.*$`, "i")
           query.upsHubName = {'$regex':regex}

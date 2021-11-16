@@ -9,6 +9,24 @@ const clinicsController = {
     getClinics: async function (req, res) {
 
         let query = {}
+        
+        if (req.query.searchTerm){
+            const regex = new RegExp(`.*${req.query.searchTerm}.*$`, "i")
+                query = {
+                    $or:[
+                        {clinic: {'$regex':regex}},
+                        {address: {'$regex':regex}},
+                        {area: {'$regex':regex}},
+                        {doctor: {'$regex':regex}},
+                        {notes: {'$regex':regex}},
+                        {specialty: {'$regex':regex}}
+                    ]
+            
+                }
+        }
+    
+
+        //TODO: possibly take out?
         if(req.query.clinic){
           const regex = new RegExp(`.*${req.query.clinic}.*$`, "i")
           query.clinic = {'$regex':regex}
