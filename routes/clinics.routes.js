@@ -18,6 +18,9 @@ router.get("/", clinicsController.getClinics)
 // router.put("/:id", validateJwtMiddleware, clinicsController.updateClinic)
 router.put("/:id", clinicsController.updateClinic)
 
+// router.get("/:id", validateJwtMiddleware, clinicsController.getClinic)
+router.get("/:id", clinicsController.getClinic)
+
 //delete route to delete a clinic **no validator yet, not sure if needed 
 router.delete("/:id", validateJwtMiddleware, clinicsController.deleteClinic)
 
