@@ -9,6 +9,24 @@ const clinicsController = {
     getClinics: async function (req, res) {
 
         let query = {}
+        
+        if (req.query.searchTerm){
+            const regex = new RegExp(`.*${req.query.searchTerm}.*$`, "i")
+                query = {
+                    $or:[
+                        {clinic: {'$regex':regex}},
+                        {address: {'$regex':regex}},
+                        {area: {'$regex':regex}},
+                        {doctor: {'$regex':regex}},
+                        {notes: {'$regex':regex}},
+                        {specialty: {'$regex':regex}}
+                    ]
+            
+                }
+        }
+    
+
+        //TODO: possibly take out?
         if(req.query.clinic){
           const regex = new RegExp(`.*${req.query.clinic}.*$`, "i")
           query.clinic = {'$regex':regex}
@@ -60,6 +78,38 @@ const clinicsController = {
 
         }
     },
+
+    //method to get all users using async/await syntax
+    getClinic: async function (req, res) {
+
+        //get the clinic id from the request params
+        const clinicId = req.params.id;
+
+        
+
+        //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
+        try {
+
+            //use our model to find users that match a query.
+            //{} is the current query which really mean find all the clinics
+            //we use await here since this is an async process and we want the code to wait for this to finish before moving on to the next line of code
+            const clinic = await Clinic.findById(clinicId);
+
+            //return all the clinics that we found in JSON format
+            res.json(clinic)
+
+        } catch (error) {
+            console.log("error getting all clinics: " + error)
+            //if any code in the try block fails, send the user a HTTP status of 400 and a message stating we could not find any clinics
+            res.status(400).json({
+                message: error.message,
+                statusCode: res.statusCode
+            })
+
+        }
+    },
+
+
     //method to update clinic
     updateClinic: async function (req, res, next) {
 
