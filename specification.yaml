@@ -5,7 +5,7 @@ info:
 servers:
   - url: http://localhost:5000
     description: localhost
-  - url: https://ca-map-be-api.herokuapp.com/docs/
+  - url: https://ca-map-be-api.herokuapp.com
     description: herokuapp
 components:
   schemas:
