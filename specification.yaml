@@ -265,8 +265,6 @@ paths:
       summary: Get a list of users
       tags:
         - Users
-      security:
-        - bearerAuth: []
       parameters:
         - name: firstName
           in: query
