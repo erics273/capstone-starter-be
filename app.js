@@ -21,6 +21,7 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/user.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
+const mediaRouter = require("./routes/media.routes")
 
 const app = express();
 
@@ -36,6 +37,8 @@ app.use('/auth', authRouter);
 
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
+
+app.use('/media', mediaRouter)
 
 //custom error hadndling
 app.use((err, req, res, next) => {
