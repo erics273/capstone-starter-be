@@ -4,11 +4,15 @@ const searchHistoryController = {
     //Gets all items matching the search term, might want to incorporate fuzzy matching at some point.
     getSearchHistory: async function(req, res) {
         try {
-            const searchHistoryTerm = req.body.searchTerm
-            const searchHistoryItems = await SearchHistoryItem.find({searchTerm: searchHistoryTerm})
-            res.status(201).json(searchHistoryItems)
+            const searchHistoryItems = await SearchHistoryItem.find(req.query)
+            res.status(200).json(searchHistoryItems)
         } catch (error) {
-            res.status(404).send(error)
+            //handle errors
+            console.log("failed to get search history item(s): " + error)
+            res.status(400).json({
+                message: error.message,
+                statusCode: res.statusCode
+            })
         }
     },
     //Adds a search history item.
@@ -18,7 +22,12 @@ const searchHistoryController = {
             let newSearchHistoryItem = await SearchHistoryItem.create(searchhistoryItem)
             res.status(201).json(await SearchHistoryItem.findById(newSearchHistoryItem._id))
         } catch (error) {
-            res.status(404).send(error)
+            //handle errors
+            console.log("failed to create search history item: " + error)
+            res.status(400).json({
+                message: error.message,
+                statusCode: res.statusCode
+            })
         }
     },
     //Updates a search history item based on the term.
@@ -32,7 +41,12 @@ const searchHistoryController = {
                 userMediaController.addSearchHistory(req, res)
             }
         } catch (error) {
-            res.status(404).send(error)
+            //handle errors
+            console.log("failed to update search history item: " + error)
+            res.status(400).json({
+                message: error.message,
+                statusCode: res.statusCode
+            })
         }
     },
     //Deletes a search history item.
@@ -41,7 +55,12 @@ const searchHistoryController = {
             console.log(req.body.searchTerm)
             res.status(201).json(await SearchHistoryItem.deleteMany({email: req.body.email, searchTerm: req.body.searchTerm}))
         } catch (error) {
-            res.status(404).send(error)
+            //handle errors
+            console.log("failed to delete search history item: " + error)
+            res.status(400).json({
+                message: error.message,
+                statusCode: res.statusCode
+            })
         }
     }
 }
