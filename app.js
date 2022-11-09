@@ -1,5 +1,6 @@
 require("dotenv-safe").config();
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -20,6 +21,8 @@ mongoose.connect(process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/myApplic
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/user.routes');
+const usersProfileRouter = require('./routes/userProfile.routes');
+const questionRouter = require('./routes/question.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
 
 const app = express();
@@ -30,12 +33,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(auth.middleware)
 app.use(swaggerDocsRouter);
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
+app.use('/api/profiles', usersProfileRouter);
+app.use('/api/questions', questionRouter);
 
 //custom error hadndling
 app.use((err, req, res, next) => {
