@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "49a37d81-9ab5-4732-8242-07e6615ac566",
+		"name": "FSE-Capstone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14837845"
+	},
+	"item": [
+		{
+			"name": "AddSearchHistoryItem",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"ArthurBrockelman@gmail.com\",\r\n    \"searchTerm\": \"Dream Theater\",\r\n    \"searchDate\": \"12/13/12\",\r\n    \"resultCount\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/history/addSearchHistoryItem",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"history",
+						"addSearchHistoryItem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSearchHistory",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"searchTerm\": \"Dream Theater\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/history/getSearchHistory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"history",
+						"getSearchHistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateSearchHistoryItem",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\": \"Arthur@gmail.com\",\n    \"searchTerm\": \"Red Hot Chili Peppers\",\n    \"searchDate\": \"12/12/12\",\n    \"resultCount\": 9}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/history/updateSearchHistoryItem",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"history",
+						"updateSearchHistoryItem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteSearchHistoryItem",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"searchTerm\": \"Dream Theater\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/history/deleteSearchHistoryItem",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"history",
+						"deleteSearchHistoryItem"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
