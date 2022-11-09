@@ -4,9 +4,6 @@ const searchHistorySchema = new mongoose.Schema({
     email: { 
         type: String, 
         required: true, 
-        index: { 
-            unique: true 
-        },
         match: [/.+\@.+\..+/, "Invalid E-mail Address"],
     },
     searchTerm: {
@@ -23,6 +20,6 @@ const searchHistorySchema = new mongoose.Schema({
     }
 });
 
-let searchItem = mongoose.model("searchItem", searchHistorySchema);
+let searchHistoryItem = mongoose.model("searchHistoryItem", searchHistorySchema);
 
-module.exports = searchItem;
+module.exports = searchHistoryItem;
