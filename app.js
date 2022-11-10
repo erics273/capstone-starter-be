@@ -38,7 +38,7 @@ app.use('/auth', authRouter);
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
 
-app.use('/media', mediaRouter)
+app.use('/api/media', mediaRouter)
 
 //custom error hadndling
 app.use((err, req, res, next) => {

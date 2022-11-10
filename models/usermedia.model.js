@@ -4,9 +4,6 @@ const userMediaSchema = new mongoose.Schema({
     email: { 
         type: String, 
         required: true, 
-        index: { 
-            unique: true 
-        },
         match: [/.+\@.+\..+/, "Invalid E-mail Address"],
     },
     mediaName: {
@@ -18,10 +15,13 @@ const userMediaSchema = new mongoose.Schema({
         required: true, 
         min: 1,
         max: 5,
-    },
+    } 
 });
 
-const UserMedia = mongoose.model('UserMedia', userMediaSchema);
+userMediaSchema.index(
+    {email: 1, mediaName: 1 }, 
+    {unique: true });
 
+const UserMedia = mongoose.model('UserMedia', userMediaSchema);
 
 module.exports = UserMedia;
