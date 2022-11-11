@@ -67,7 +67,7 @@ components:
               type: string
           required:
             - message
-        - $ref: '#/components/schemas/ErrorStatusCode'
+        - $ref: "#/components/schemas/ErrorStatusCode"
     ErrorStatusCode:
       type: object
       properties:
@@ -77,6 +77,18 @@ components:
           maximum: 599
       required:
         - statusCode
+    searchHistoryItem:
+      additionalProperties: false
+      type: object
+      properties:
+        email:
+          type: string
+        searchTerm:
+          type: string
+        searchDate:
+          type: string
+        resultCount:
+          type: integer
   securitySchemes:
     bearerAuth:
       type: http
@@ -88,7 +100,7 @@ components:
       name: username
       required: true
       schema:
-        $ref: '#/components/schemas/User'
+        $ref: "#/components/schemas/User"
       description: The username of the user
   headers:
     WWW-Authenticate:
@@ -101,27 +113,27 @@ components:
             Bearer realm="POST your username and password to /auth/login to
             receive a token"
   responses:
-    '400':
+    "400":
       description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OperationalError'
-    '401':
+            $ref: "#/components/schemas/OperationalError"
+    "401":
       description: Unauthorized
       headers:
         WWW-Authenticate:
-          $ref: '#/components/headers/WWW-Authenticate'
+          $ref: "#/components/headers/WWW-Authenticate"
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OperationalError'
-    '404':
+            $ref: "#/components/schemas/OperationalError"
+    "404":
       description: Not Found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OperationalError'
+            $ref: "#/components/schemas/OperationalError"
 paths:
   /auth/login:
     post:
@@ -133,16 +145,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Login'
+              $ref: "#/components/schemas/Login"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginSuccess'
-        '400':
-          $ref: '#/components/responses/400'
+                $ref: "#/components/schemas/LoginSuccess"
+        "400":
+          $ref: "#/components/responses/400"
   /auth/logout:
     get:
       summary: Logout a user
@@ -151,10 +163,10 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '204':
+        "204":
           description: No Content
-        '401':
-          $ref: '#/components/responses/401'
+        "401":
+          $ref: "#/components/responses/401"
   /api/users:
     get:
       summary: Get a list of users
@@ -175,10 +187,10 @@ paths:
           description: Get users with a specific last name (fuzzy, case insensitve)
           required: false
           schema:
-            firstName:
+            lastName:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -189,9 +201,9 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: '#/components/schemas/UserResponse'
-        '400':
-          $ref: '#/components/responses/400'
+                          $ref: "#/components/schemas/UserResponse"
+        "400":
+          $ref: "#/components/responses/400"
     post:
       summary: Create a new user
       operationId: createUser
@@ -203,9 +215,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -214,9 +226,9 @@ paths:
                   - type: object
                     properties:
                       user:
-                        $ref: '#/components/schemas/UserResponse'
-        '400':
-          $ref: '#/components/responses/400'
+                        $ref: "#/components/schemas/UserResponse"
+        "400":
+          $ref: "#/components/responses/400"
   /api/users/{email}:
     put:
       summary: Update user
@@ -237,17 +249,154 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '404':
-          $ref: '#/components/responses/404'
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+  /api/history/getSearchHistory:
+    get:
+      summary: get a list of search history items. Parameters act as filters. If no parameters passed, returns all.
+      tags:
+        - History
+      parameters:
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+            description: The email address of the user
+        - name: searchTerm
+          in: query
+          required: false
+          schema:
+            type: string
+            description: The term that was searched.
+        - name: searchDate
+          in: query
+          schema:
+            type: string
+            description: The date the search occurred.
+        - name: resultCount
+          in: query
+          schema:
+            type: integer
+            description: The number of results returned from the search.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/searchHistoryItem"
+        "400":
+          $ref: "#/components/responses/400"
+  /api/history/addSearchHistory:
+    post:
+      summary: Create a new search history item.
+      operationId: addSearchHistoryItem
+      x-controller: searchHistory
+      tags:
+        - History
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/searchHistoryItem"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/searchHistoryItem"
+        "400":
+          $ref: "#/components/responses/400"
+  /api/history/deleteSearchHistoryItem:
+    delete:
+      summary: Delete a search history item(s) in the database.
+      tags:
+        - History
+      parameters:
+          - name: email
+            in: query
+            required: false
+            schema:
+              type: string
+              description: The email address of the user
+          - name: searchTerm
+            in: query
+            required: false
+            schema:
+              type: string
+              description: The term that was searched.
+          - name: searchDate
+            in: query
+            schema:
+              type: string
+              description: The date the search occurred.
+          - name: resultCount
+            in: query
+            schema:
+              type: integer
+              description: The number of results returned from the search.
+      responses:
+        "200":
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/searchHistoryItem"
+        "400":
+            $ref: "#/components/responses/400"
+  /api/history/updateSearchHistoryItem:
+    put:
+      summary: Update a search history item(s) in the database.
+      tags:
+        - History
+      parameters:
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+            description: The email address of the user
+        - name: searchTerm
+          in: query
+          required: false
+          schema:
+            type: string
+            description: The term that was searched.
+        - name: searchDate
+          in: query
+          schema:
+            type: string
+            description: The date the search occurred.
+        - name: resultCount
+          in: query
+          schema:
+            type: integer
+            description: The number of results returned from the search.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/searchHistoryItem"
+        "400":
+          $ref: "#/components/responses/400"
