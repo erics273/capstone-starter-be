@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
+const cors=require("cors");
 const auth = require("./auth");
 
 //Bring in Mongoose so we can communicate with MongoDB
@@ -25,6 +25,7 @@ const mediaRouter = require("./routes/media.routes")
 const searchHistoryRouter = require("./routes/searchHistory.routes")
 const app = express();
 
+app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -38,7 +39,7 @@ app.use('/auth', authRouter);
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
 app.use("/api/history", searchHistoryRouter)
-app.use('/media', mediaRouter)
+app.use('/api/userMedia', mediaRouter)
 
 //custom error hadndling
 app.use((err, req, res, next) => {
