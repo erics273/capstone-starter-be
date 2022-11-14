@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const cors = require('cors');
+
 const auth = require("./auth");
 
 //Bring in Mongoose so we can communicate with MongoDB
@@ -31,6 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(auth.middleware)
 app.use(swaggerDocsRouter);
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
