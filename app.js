@@ -25,6 +25,8 @@ const usersRouter = require('./routes/user.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
 const mediaRouter = require("./routes/media.routes")
 const searchHistoryRouter = require("./routes/searchHistory.routes")
+const tasteDiveRouter = require("./routes/tasteDive.routes")
+
 const app = express();
 
 app.use(logger('dev'));
@@ -42,6 +44,7 @@ app.use('/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/media', mediaRouter)
 app.use("/api/history", searchHistoryRouter)
+app.use("/api/tasteDive", tasteDiveRouter)
 
 //custom error hadndling
 app.use((err, req, res, next) => {
