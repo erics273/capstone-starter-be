@@ -15,6 +15,10 @@ const userMediaSchema = new mongoose.Schema({
         required: true, 
         min: 1,
         max: 5,
+    },
+    createDateTime: 
+    {type: Date, 
+     default: Date.now
     } 
 });
 
