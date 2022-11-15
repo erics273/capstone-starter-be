@@ -132,11 +132,6 @@ const userMediaController = {
             })
         }
 
-    },
-
-    getMedia: async function(req, res) {
-
-        res.status(200).json(await UserMedia.find({email: "ArthurBrockelman@gmail.com"}))
     }
 
 }
