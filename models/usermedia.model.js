@@ -21,7 +21,8 @@ const userMediaSchema = new mongoose.Schema({
      default: Date.now
     } 
 });
-// test comment for git
+// test  comment for git
+// another test comment for git
 userMediaSchema.index(
     {email: 1, mediaName: 1 }, 
     {unique: true });
