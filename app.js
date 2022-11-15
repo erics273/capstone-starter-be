@@ -3,7 +3,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cors=require("cors");
+
+const cors = require('cors');
+
 const auth = require("./auth");
 
 //Bring in Mongoose so we can communicate with MongoDB
@@ -23,6 +25,8 @@ const usersRouter = require('./routes/user.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
 const mediaRouter = require("./routes/media.routes")
 const searchHistoryRouter = require("./routes/searchHistory.routes")
+const tasteDiveRouter = require("./routes/tasteDive.routes")
+
 const app = express();
 
 app.use(cors())
@@ -32,6 +36,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(auth.middleware)
 app.use(swaggerDocsRouter);
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
@@ -40,7 +45,7 @@ app.use('/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/media', mediaRouter)
 app.use("/api/history", searchHistoryRouter)
-app.use('/api/userMedia', mediaRouter)
+app.use("/api/tasteDive", tasteDiveRouter)
 
 //custom error hadndling
 app.use((err, req, res, next) => {
