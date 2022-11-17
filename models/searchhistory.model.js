@@ -17,6 +17,10 @@ const searchHistorySchema = new mongoose.Schema({
     resultCount: {
         type: Number,
         required: true
+    },
+    createDateTime: 
+    {type: Date, 
+     default: Date.now
     }
 });
 

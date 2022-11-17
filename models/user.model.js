@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: true,
         select: false
+    },
+    createDateTime: 
+    {type: Date, 
+     default: Date.now
     }
 })
 
