@@ -25,9 +25,9 @@ const userMediaSchema = new mongoose.Schema({
 // another test comment for git
 // third test comment for git
 
-userMediaSchema.index(
-    {email: 1, mediaName: 1 }, 
-    {unique: true });
+// userMediaSchema.index(
+//     {email: 1, mediaName: 1 }, 
+//     {unique: true });
 
 const UserMedia = mongoose.model('UserMedia', userMediaSchema);
 

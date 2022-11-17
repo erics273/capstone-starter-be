@@ -132,6 +132,29 @@ const userMediaController = {
             })
         }
 
+    },
+
+    deleteUserMedia: async function(req, res, next){
+
+        try {
+
+            //get the user email from the request params
+            const email = req.query.email;
+            const mediaName = req.query.medianame;
+            console.log(email, mediaName)
+            //try to find our user by the email provided in the request params
+            const userMedia = await UserMedia.deleteOne({email: email, medianame: mediaName})
+            console.log(userMedia)
+            res.status(200).send(userMedia)
+            
+        } catch (error) {
+            console.log("failed to update user media: " + error)
+            res.status(400).json({
+                message: error.message,
+                statusCode: res.statusCode
+            })
+        }
+
     }
 
 }

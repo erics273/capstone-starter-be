@@ -19,7 +19,7 @@ router.get("/getMediaForUser/:email", userMediaController.getMediaForUser)
 //put route to update media for a specific user/media type
 router.post("/updateUserMedia/:email/:mediaName", userMediaController.updateUserMedia)
 
-//app.get('/user/:userId/:mediaName'
+router.delete("/deleteUserMedia", userMediaController.deleteUserMedia)
 
 
 module.exports = router;

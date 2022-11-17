@@ -47,9 +47,10 @@ const searchHistoryController = {
 
     //Adds a search history item.
     addSearchHistory: async function (req, res) {
+        console.log("Req Body" + JSON.stringify(req.body))
 
         try {
-
+            
             //Store body.
             const searchhistoryItem = req.body
 
