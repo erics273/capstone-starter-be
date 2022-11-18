@@ -179,7 +179,7 @@ const userMediaController = {
             const mediaName = req.query.medianame;
             console.log(email, mediaName)
             //try to find our user by the email provided in the request params
-            const userMedia = await UserMedia.deleteOne({email: email, medianame: mediaName})
+            const userMedia = await UserMedia.deleteOne({email: email, mediaName: mediaName})
             console.log(userMedia)
             res.status(200).send(userMedia)
             
