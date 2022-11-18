@@ -45,6 +45,47 @@ const userController = {
 
         }
     },
+
+    //method to get count of users created by date
+    getAllUserCreationDateCounts: async function(req, res){
+
+        //create base query
+        let query = {}
+
+
+        //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
+        try {
+            
+            //use our model to find users that match a query.
+            //{} is the current query which really mean find all the users
+            //we use await here since this is an async process and we want the code to wait for this to finish before moving on to the next line of code
+            let allUsers = await User.find(query)
+
+
+            //this works from user media controller
+            //{ "$group" : { "_id" : { "mediaRating": "$mediaRating"}, "count": { "$sum" : 1 } } }, 
+            //{ "$project" : {"_id" : 0, "mediaRating" : "$_id.mediaRating",  "count":1 } } ,
+            //{ $sort : { mediaRating : 1 } }
+            
+        let getAllUserCreationDateCounts = await User.aggregate([
+            {$group:{"_id":{"$dateToString":{"format": "%Y-%m-%d", "date": "$createDateTime"}}, "count":{ "$sum": 1}}},
+            { $sort : { _id : 1 } }
+        ])
+            
+            //return all the users that we found in JSON format
+            res.json(getAllUserCreationDateCounts)
+            
+        } catch (error) {
+            console.log("error getting all users: " + error)
+            //if any code in the try block fails, send the user a HTTP status of 400 and a message stating we could not find any users
+            res.status(400).json({
+                message: error.message,
+                statusCode: res.statusCode
+            })
+
+        }
+    },
+
     //method to create a new user
     createUser: async function(req, res){
 

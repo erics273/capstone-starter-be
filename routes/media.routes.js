@@ -16,6 +16,9 @@ router.get("/getAllMedia",  userMediaController.getAllMedia)
 //get route to return all media for all users  
 router.get("/getAllMediaRatingCounts",  userMediaController.getAllMediaRatingCounts)
 
+//get route to return all media for all users  
+router.get("/getAllMediaNameCounts",  userMediaController.getAllMediaNameCounts)
+
 //get route to return media for a specific user
 router.get("/getMediaForUser/:email", userMediaController.getMediaForUser)
 
