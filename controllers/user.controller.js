@@ -68,7 +68,8 @@ const userController = {
             //{ $sort : { mediaRating : 1 } }
             
         let getAllUserCreationDateCounts = await User.aggregate([
-            {$group:{"_id":{"$dateToString":{"format": "%Y-%m-%d", "date": "$createDateTime"}}, "count":{ "$sum": 1}}}
+            {$group:{"_id":{"$dateToString":{"format": "%Y-%m-%d", "date": "$createDateTime"}}, "count":{ "$sum": 1}}},
+            { $sort : { _id : 1 } }
         ])
             
             //return all the users that we found in JSON format
