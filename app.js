@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const cors = require('cors');
+
 const auth = require("./auth");
 
 //Bring in Mongoose so we can communicate with MongoDB
@@ -21,21 +23,29 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/user.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
+const mediaRouter = require("./routes/media.routes")
+const searchHistoryRouter = require("./routes/searchHistory.routes")
+const tasteDiveRouter = require("./routes/tasteDive.routes")
 
 const app = express();
 
+app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(auth.middleware)
 app.use(swaggerDocsRouter);
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
+app.use('/api/media', mediaRouter)
+app.use("/api/history", searchHistoryRouter)
+app.use("/api/tasteDive", tasteDiveRouter)
 
 //custom error hadndling
 app.use((err, req, res, next) => {
