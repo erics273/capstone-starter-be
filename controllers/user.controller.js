@@ -36,7 +36,7 @@ const userController = {
             res.json(allUsers)
             
         } catch (error) {
-            console.log("error getting all users: " + error)
+            console.log("Error getting all users: " + error)
             //if any code in the try block fails, send the user a HTTP status of 400 and a message stating we could not find any users
             res.status(400).json({
                 message: error.message,
@@ -46,29 +46,25 @@ const userController = {
         }
     },
     //method to create a new user
-    createUser: async function(req, res){
-
+    createUser: async function(req, res) {
         try {
-
-            //store user data sent through the request
             const userData = req.body;
-
-            //pass the userData to the create method of the User model
-            let newUser = await User.create(userData)
-
-            //return the newly created user
-            res.status(201).json(await User.findById(newUser._id))
-            
+            let newUser = await User.create(userData);
+            res.status(201).json(await User.findById(newUser._id));
         } catch (error) {
-            //handle errors creating user
-            console.log("failed to create user: " + error)
+            if (error.code === 11000) { // MongoDB duplicate key error code
+                return res.status(400).json({
+                    message: "Email already exists.",
+                    statusCode: res.statusCode
+                });
+            }
+            console.log("Failed to create user: " + error);
             res.status(400).json({
                 message: error.message,
                 statusCode: res.statusCode
-            })
+            });
         }
-
-    },
+    },    
     //method to update a user
     updateUser: async function(req, res, next){
 
@@ -95,7 +91,7 @@ const userController = {
             res.json(await User.findById(user._id))
             
         } catch (error) {
-            console.log("failed to update user: " + error)
+            console.log("Failed to update user: " + error)
             res.status(400).json({
                 message: error.message,
                 statusCode: res.statusCode
@@ -105,7 +101,6 @@ const userController = {
     },
     //method to get all users using async/await syntax
     getUser: async function(req, res){
-
         //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
         try {
 
@@ -115,11 +110,12 @@ const userController = {
             //use our model to find the user that match a query.
             //{email: some@email.com} is the current query which really mean find the user with that email
             //we use await here since this is an async process and we want the code to wait for this to finish before moving on to the next line of code
-            let foundUser = await User.findOne({email: userEmail})
+            let foundUser = await User.findOne({email: userEmail}).populate('characters')
 
             //if we found the user, return that user otherwise return a 404
             if(foundUser){
                 res.json(foundUser)
+                console.log(foundUser)
             }else{
                 res.status(404).send({
                     status: res.statusCode,
@@ -128,7 +124,7 @@ const userController = {
             }
             
         } catch (error) {
-            console.log("error getting user: " + error)
+            console.log("Error getting user: " + error)
             //if any code in the try block fails, send the user a HTTP status of 400 and a message stating we could not find the user
             res.status(400).json({
                 message: error.message,
@@ -136,7 +132,28 @@ const userController = {
             })
 
         }
-    }
+    },
+
+    getUserCharacters: async function(req, res) {
+        try {
+            const userId = req.params.userId; 
+            console.log("Fetching characters for user:", userId);
+    
+            const user = await User.findById(userId).populate('characters');
+    
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            } 
+            
+            res.json(user.characters);
+        } catch (error) {
+            console.error(`Error fetching user's character list`, error);
+            res.status(400).json({
+                message: error.message,
+                statusCode: res.statusCode
+            });
+        }
+      },
     
 
 }
